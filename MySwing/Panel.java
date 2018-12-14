@@ -1,7 +1,7 @@
 package MySwing;
 
-import gameEngine.Player;
-import gameEngine.Tilemap;
+
+import gameEngine.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,8 @@ public class Panel extends JPanel implements Runnable {
     private final int DELAY = 10;
     private Thread animator;
     private Image img_robot;
-    private Image[] img_tile = new Image[2];
+    private int tileNum = 6;
+    private Image[] img_tile = new Image[tileNum];
     private Tilemap tilemap;
     private Player player;
     private int[][] map;
@@ -24,7 +25,8 @@ public class Panel extends JPanel implements Runnable {
 
         setPreferredSize(new Dimension(width, height));
         setFocusable(true);
-        addKeyListener(new Input());
+        addKeyListener(new KeyInput());
+        addMouseListener(new MouseInput());
         setBackground(Color.DARK_GRAY);
 
         loadImages();
@@ -33,13 +35,13 @@ public class Panel extends JPanel implements Runnable {
         player = new Player(width/2,height/2,img_robot,imgW,imgH,2);
 
         map = new int[][]{ // TODO load file
-            {1,1,1,1,1,1,1,1,1,1},
-            {1,1,1,1,1,1,1,1,1,1},
-            {1,1,1,1,1,1,2,1,1,1},
-            {1,1,1,1,2,1,1,1,1,1},
-            {1,1,1,1,1,1,1,1,1,1},
-            {1,1,1,1,1,1,1,2,1,1},
-            {1,1,1,1,1,1,1,1,1,1},
+            {1,3,1,1,1,1,1,1,3,1},
+            {1,1,1,6,1,3,1,1,1,1},
+            {1,1,4,1,1,1,2,4,1,3},
+            {1,1,1,1,2,1,6,1,1,1},
+            {1,1,1,3,1,4,3,3,3,1},
+            {1,5,1,1,1,1,1,2,1,1},
+            {1,1,1,1,3,1,1,1,1,1},
         };
         tilemap = new Tilemap(10, 7,64, img_tile, map);
     }
@@ -97,7 +99,7 @@ public class Panel extends JPanel implements Runnable {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private class Input extends KeyAdapter {
+    private class KeyInput extends KeyAdapter {
 
         private boolean strgHold;
 
@@ -122,10 +124,12 @@ public class Panel extends JPanel implements Runnable {
 
         ImageIcon ii = new ImageIcon("assets/robot.png");
         img_robot = ii.getImage();
-        ii = new ImageIcon("assets/tile_1.png");
-        img_tile[0] = ii.getImage();
-        ii = new ImageIcon("assets/tile_2.png");
-        img_tile[1] = ii.getImage();
+
+        for (int i = 0; i < tileNum; i++) {
+            ii = new ImageIcon("assets/tile_"+ i +".png");
+            img_tile[i] = ii.getImage();
+        }
+
     }
 
 }
