@@ -1,12 +1,12 @@
-package gameEngine;
+package gameEngine.gameObjects;
 
 import java.awt.Image;
 
 public class Mover extends Sprite {
 
     private int speed;
-     int dx=0; // direction x
-     int dy=0; // direction y
+    protected int dx=0; // direction x
+    protected int dy=0; // direction y
 
     public Mover(double _x, double _y, Image _img, int _imgW, int _imgH, int _speed) {
         super( _x, _y, _img, _imgW, _imgH);

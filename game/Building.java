@@ -1,6 +1,6 @@
 package game;
 
-import gameEngine.Tile;
+import gameEngine.gameObjects.Tile;
 
 import java.awt.*;
 

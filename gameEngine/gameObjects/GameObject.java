@@ -1,4 +1,4 @@
-package gameEngine;
+package gameEngine.gameObjects;
 
 import java.awt.geom.Point2D;
 
@@ -6,6 +6,11 @@ public class GameObject extends Point2D {
 
     double x;
     double y;
+
+    public GameObject() {
+        this.x = 0;
+        this.y = 0;
+    }
 
     public GameObject(double _x, double _y) {
         this.x = _x;

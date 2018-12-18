@@ -1,50 +1,29 @@
 package MySwing;
 
 
-import gameEngine.*;
+import game.MyGame;
+//import game.MouseInput;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class Panel extends JPanel implements Runnable {
 
-    private int width = 640;
-    private int height = 480;
+    private MyGame myGame;
     private final int DELAY = 10;
     private Thread animator;
-    private Image img_robot;
-    private int tileNum = 6;
-    private Image[] img_tile = new Image[tileNum];
-    private Tilemap tilemap;
-    private Player player;
-    private int[][] map;
+
 
     public Panel() {
 
-        setPreferredSize(new Dimension(width, height));
+        myGame = new MyGame(this);
+
         setFocusable(true);
-        addKeyListener(new KeyInput());
-        addMouseListener(new MouseInput());
-        setBackground(Color.DARK_GRAY);
-
-        loadImages();
-        int imgW = img_robot.getWidth(this);
-        int imgH = img_robot.getHeight(this);
-        player = new Player(width/2,height/2,img_robot,imgW,imgH,2);
-
-        map = new int[][]{ // TODO load file
-            {1,3,1,1,1,1,1,1,3,1},
-            {1,1,1,6,1,3,1,1,1,1},
-            {1,1,4,1,1,1,2,4,1,3},
-            {1,1,1,1,2,1,6,1,1,1},
-            {1,1,1,3,1,4,3,3,3,1},
-            {1,5,1,1,1,1,1,2,1,1},
-            {1,1,1,1,3,1,1,1,1,1},
-        };
-        tilemap = new Tilemap(10, 7,64, img_tile, map);
+        //addKeyListener(new KeyInput());
+        //addMouseListener(new MouseInput());
+        //setBackground(Color.DARK_GRAY);
     }
+
     @Override
     public void addNotify() {
         super.addNotify();
@@ -84,52 +63,20 @@ public class Panel extends JPanel implements Runnable {
     } // run update & repaint
 
     private void update() {
-        player.update();
+        myGame.update();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        tilemap.drawTiles(g);
-        player.draw(g);
-
-        tilemap.drawDebug(g);
+        myGame.draw(g);
 
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private class KeyInput extends KeyAdapter {
 
-        private boolean strgHold;
 
-        @Override
-        public void keyPressed(KeyEvent e){
-            player.keyPressed(e);
-            int key = e.getKeyCode();
-            if (key == KeyEvent.VK_CONTROL) strgHold = true;
-            if (key == KeyEvent.VK_D && strgHold) tilemap.debug = !tilemap.debug;
-        }
 
-        @Override
-        public void keyReleased(KeyEvent e){
-            player.keyReleased(e);
-            int key = e.getKeyCode();
-            if (key == KeyEvent.VK_CONTROL) strgHold = false;
-        }
-
-    }
-
-    private void loadImages() {
-
-        ImageIcon ii = new ImageIcon("assets/robot.png");
-        img_robot = ii.getImage();
-
-        for (int i = 0; i < tileNum; i++) {
-            ii = new ImageIcon("assets/tile_"+ i +".png");
-            img_tile[i] = ii.getImage();
-        }
-
-    }
 
 }
